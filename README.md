@@ -77,7 +77,32 @@ This project provides a Python script that listens to the status of an OpenVPN s
 
      [Install]
      WantedBy=multi-user.target
-     ```
+
+### Result
+
+```bash
+
+root@vm:/home/my-user# cat /var/log/openvpn/openvpn-status.log 
+TIME,2024-02-17 03:28:15,1708140495
+HEADER,CLIENT_LIST,Common Name,Real Address,Virtual Address,Virtual IPv6 Address,Bytes Received,Bytes Sent,Connected Since,Connected Since (time_t),Username,Client ID,Peer ID,Data Channel Cipher
+CLIENT_LIST,polatto,x.x.x.x:40095,10.8.0.2,,9725100,12947775,2024-02-17 03:06:58,1708139218,UNDEF,1,0,AES-256-GCM
+HEADER,ROUTING_TABLE,Virtual Address,Common Name,Real Address,Last Ref,Last Ref (time_t)
+ROUTING_TABLE,10.8.0.2,polatto,x.x.x.x:40095,2024-02-17 03:28:14,1708140494
+GLOBAL_STATS,Max bcast/mcast queue length,1
+END
+
+root@vm:/home/my-user# cat result.json 
+[
+{
+     "user": "polatto",
+     "public_ip": "x.x.x.x",
+     "private_ip": "10.8.0.2",
+     "bytes_received": 4288124,
+     "bytes_sent": 4133411,
+     "Connected_since": "2024-02-17 03:06:58"
+}
+]
+```
 
 ## Contributing
 
