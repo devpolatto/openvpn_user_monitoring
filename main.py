@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+import argparse
+import time
+import json
+
+# Function to parse the OpenVPN status file and extract lines starting with "CLIENT_LIST"
+def parse_status_file(status_file_path):
+     client_list_lines = []
+     try:
+        with open(status_file_path, 'r') as status_file:
+            # Process each line in the status file
+            for line in status_file:
+                if line.startswith("CLIENT_LIST"):
+                    client_list_lines.append(line.strip())
+     except FileNotFoundError:
+        print("Status file not found.")
+     return client_list_lines
+
+# Function to parse client list lines and extract connected clients' information
+def parse_client_list_lines(client_list_lines):
+     connected_clients = []
+     for line in client_list_lines:
+          columns = line.split(',')
+          if len(columns) >= 11:
+               user = columns[1]
+               real_address = columns[2].split(':')[0]
+               virtual_address = columns[3]
+               bytes_received = int(columns[5])
+               bytes_sent = int(columns[6])
+               connected_since = columns[7]
+               
+               # Store the client information in a dictionary
+               client_info = {
+                    "user": user,
+                    "public_ip": real_address,
+                    "private_ip": virtual_address,
+                    "bytes_received": bytes_received,
+                    "bytes_sent": bytes_sent,
+                    "Connected_since": connected_since
+               }
+               connected_clients.append(client_info)
+     return connected_clients
+
+# Function to write connected clients' information to a JSON file
+def write_to_json(connected_clients, output_file_path):
+     with open(output_file_path, 'w') as output_file:
+        json.dump(connected_clients, output_file, indent=4)
+
+# Main function
+def main(status_file_path, output_file_path):
+     try:
+          while True:
+               # Parse the status file and extract lines starting with "CLIENT_LIST"
+               client_list_lines = parse_status_file(status_file_path)
+               
+               # Parse client list lines and extract connected clients' information
+               connected_clients = parse_client_list_lines(client_list_lines)
+               
+               # Write the connected clients' information to a JSON file
+               write_to_json(connected_clients, output_file_path)
+               
+               print("Updated JSON file with connected clients' information.")
+               
+               # Sleep for 1 minute before checking for updates again
+               time.sleep(60)
+     except KeyboardInterrupt:
+        print("Monitoring stopped.")
+
+if __name__ == "__main__":
+     # Parse command-line arguments
+     parser = argparse.ArgumentParser(description="OpenVPN status file monitor")
+     parser.add_argument("-o", "--output-file", required=True, help="Output JSON file to store connected clients' information")
+     parser.add_argument("-f", "--status-file", default="/var/log/openvpn/openvpn-status.log", help="Path to the OpenVPN status file")
+     args = parser.parse_args()
+     
+     main(args.status_file, args.output_file)
