@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  default:
+    name: elastic
+    external: false
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    container_name: filebeat
+    environment:
+      - ELASTIC_HOSTS=${ELASTIC_HOSTS}
+      - ELASTIC_USER=${ELASTIC_USER}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    user: root
+    restart: always
+    volumes:
+      - /var/log/openvpn/openvpn-user-status.log:/var/log/openvpn-user-status.log:ro
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+    command: filebeat -e -strict.perms=false
