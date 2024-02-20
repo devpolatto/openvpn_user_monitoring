@@ -92,16 +92,7 @@ GLOBAL_STATS,Max bcast/mcast queue length,1
 END
 
 root@vm:/home/my-user# cat result.json 
-[
-{
-     "user": "polatto",
-     "public_ip": "x.x.x.x",
-     "private_ip": "10.8.0.2",
-     "bytes_received": 4288124,
-     "bytes_sent": 4133411,
-     "Connected_since": "2024-02-17 03:06:58"
-}
-]
+{"user": "polatto","public_ip": "x.x.x.x","private_ip": "10.8.0.2","bytes_received": 4288124,"bytes_sent": 4133411,"Connected_since": "2024-02-17 03:06:58"}
 ```
 
 ## Contributing
