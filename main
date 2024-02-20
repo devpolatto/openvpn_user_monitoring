@@ -43,11 +43,15 @@ def parse_client_list_lines(client_list_lines):
 
 # Function to write connected clients' information to a JSON file
 def write_to_json(connected_clients, output_file_path):
-     with open(output_file_path, 'w') as output_file:
-        json.dump(connected_clients, output_file, indent=4)
+    with open(output_file_path, 'w') as output_file:
+        for i, client_info in enumerate(connected_clients):
+            json_str = json.dumps(client_info)
+            output_file.write(json_str)
+            if i < len(connected_clients) - 1:
+                output_file.write('\n')
 
 # Main function
-def main(status_file_path, output_file_path):
+def main(status_file_path, output_file_path, time_monitor_interval):
      try:
           while True:
                # Parse the status file and extract lines starting with "CLIENT_LIST"
@@ -62,7 +66,7 @@ def main(status_file_path, output_file_path):
                print("Updated JSON file with connected clients' information.")
                
                # Sleep for 1 minute before checking for updates again
-               time.sleep(60)
+               time.sleep(time_monitor_interval)
      except KeyboardInterrupt:
         print("Monitoring stopped.")
 
@@ -71,6 +75,7 @@ if __name__ == "__main__":
      parser = argparse.ArgumentParser(description="OpenVPN status file monitor")
      parser.add_argument("-o", "--output-file", required=True, help="Output JSON file to store connected clients' information")
      parser.add_argument("-f", "--status-file", default="/var/log/openvpn/openvpn-status.log", help="Path to the OpenVPN status file")
+     parser.add_argument("-t", "--time-monitor-interval", default=60, help="The time interval between each log collection")
      args = parser.parse_args()
      
-     main(args.status_file, args.output_file)
+     main(args.status_file, args.output_file, args.time_monitor_interval)
