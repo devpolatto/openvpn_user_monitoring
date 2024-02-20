@@ -39,7 +39,7 @@ This project provides a Python script that listens to the status of an OpenVPN s
 1. Run the script indicating the destination path of the data   obtained from the OpenVPN status file
 
      ```bash
-     ./main -o /home/$USER/ovpn-user.log
+     ./main
      ```
 
      By default, the script monitors the file ```/var/log/openvpn/openvpn-status.log```, but you can change the path using the ```-f``` argument

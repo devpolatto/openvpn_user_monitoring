@@ -73,7 +73,7 @@ def main(status_file_path, output_file_path, time_monitor_interval):
 if __name__ == "__main__":
      # Parse command-line arguments
      parser = argparse.ArgumentParser(description="OpenVPN status file monitor")
-     parser.add_argument("-o", "--output-file", required=True, help="Output JSON file to store connected clients' information")
+     parser.add_argument("-o", "--output-file", default="/var/log/openvpn/openvpn-user-status.log", help="Output JSON file to store connected clients' information")
      parser.add_argument("-f", "--status-file", default="/var/log/openvpn/openvpn-status.log", help="Path to the OpenVPN status file")
      parser.add_argument("-t", "--time-monitor-interval", default=60, help="The time interval between each log collection")
      args = parser.parse_args()
