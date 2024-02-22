@@ -4,7 +4,7 @@ networks:
   default:
     name: elastic
     external: false
-
+services:
   filebeat:
     image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
     container_name: filebeat
