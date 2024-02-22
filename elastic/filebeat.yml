@@ -3,6 +3,9 @@ filebeat.inputs:
     paths:
       - /var/log/openvpn-user-status.json
       # - /var/log/ovpn-ldap-auth.log
+    # json.add_error_key: true
+    # json.overwrite_keys: true
+    # json.expand_keys: true
 
 output.elasticsearch:
   hosts: ["${ELASTIC_HOSTS}"]
