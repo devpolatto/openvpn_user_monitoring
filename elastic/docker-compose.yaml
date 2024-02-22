@@ -4,6 +4,7 @@ networks:
   default:
     name: elastic
     external: false
+
 services:
   filebeat:
     image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
@@ -15,6 +16,7 @@ services:
     user: root
     restart: always
     volumes:
-      - /var/log/openvpn/openvpn-user-status.log:/var/log/openvpn-user-status.log:ro
+      - /var/log/openvpn/openvpn-user-status.log:/var/log/openvpn-user-status.json
+      # - /var/log/openvpn/ovpn-ldap-auth.log:/var/log/ovpn-ldap-auth.log
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
     command: filebeat -e -strict.perms=false
